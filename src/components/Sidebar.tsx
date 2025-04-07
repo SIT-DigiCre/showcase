@@ -2,24 +2,44 @@
 
 import Link from "next/link";
 import Navbar from "./Navbar";
+import { buttonVariants } from "./ui/button";
+import { cn } from "#/lib/utils";
 
 export default function Sidebar() {
   return (
     <aside className="w-64 bg-gray-50 border-r border-gray-200 p-4 h-screen">
       <h1 className="font-black text-4xl">Showcase</h1>
-      <ul>
-        <li className="mb-4">
-          <Link href="/timeline" className="hover:text-blue-600">
+      <ul className="my-8">
+        <li>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "lg" }),
+              "w-full justify-start px-4 text-xl"
+            )}
+            href="/timeline"
+          >
             Timeline
           </Link>
         </li>
-        <li className="mb-4">
-          <Link href="/search" className="hover:text-blue-600">
+        <li>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "lg" }),
+              "w-full justify-start px-4 text-xl"
+            )}
+            href="/timeline"
+          >
             Search
           </Link>
         </li>
-        <li className="mb-4">
-          <Link href="/mypage" className="hover:text-blue-600">
+        <li>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "lg" }),
+              "w-full justify-start px-4 text-xl"
+            )}
+            href="/timeline"
+          >
             Me
           </Link>
         </li>
