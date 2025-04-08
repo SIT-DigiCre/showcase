@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "413e42d7-5553-4b97-8de6-b906830bf7b5",
+  "id": "875941e2-78db-4539-86a3-204a01e3fb3f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -121,52 +121,21 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "audio": {
-      "name": "audio",
+    "asset": {
+      "name": "asset",
       "columns": {
-        "item_id": {
-          "name": "item_id",
-          "type": "integer",
+        "id": {
+          "name": "id",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
-        "file_url": {
-          "name": "file_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "duration": {
-          "name": "duration",
+        "item_id": {
+          "name": "item_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "document": {
-      "name": "document",
-      "columns": {
-        "item_id": {
-          "name": "item_id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "file_url": {
-          "name": "file_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
           "autoincrement": false
         },
         "format": {
@@ -185,7 +154,66 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "asset_item_id_item_id_fk": {
+          "name": "asset_item_id_item_id_fk",
+          "tableFrom": "asset",
+          "tableTo": "item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "audio": {
+      "name": "audio",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "audio_item_id_item_id_fk": {
+          "name": "audio_item_id_item_id_fk",
+          "tableFrom": "audio",
+          "tableTo": "item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -193,18 +221,18 @@
     "image": {
       "name": "image",
       "columns": {
-        "item_id": {
-          "name": "item_id",
-          "type": "integer",
+        "id": {
+          "name": "id",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
-        "file_url": {
-          "name": "file_url",
-          "type": "text",
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "width": {
@@ -230,7 +258,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "image_item_id_item_id_fk": {
+          "name": "image_item_id_item_id_fk",
+          "tableFrom": "image",
+          "tableTo": "item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -259,6 +301,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "file_url": {
+          "name": "file_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -272,7 +321,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.296Z\"'"
+          "default": "'\"2025-04-08T09:31:06.795Z\"'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -280,7 +329,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.296Z\"'"
+          "default": "'\"2025-04-08T09:31:06.795Z\"'"
         }
       },
       "indexes": {},
@@ -329,7 +378,7 @@
         },
         "created_by": {
           "name": "created_by",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -340,7 +389,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.296Z\"'"
+          "default": "'\"2025-04-08T09:31:06.796Z\"'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -348,7 +397,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.296Z\"'"
+          "default": "'\"2025-04-08T09:31:06.796Z\"'"
         }
       },
       "indexes": {
@@ -360,7 +409,21 @@
           "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "series_created_by_user_id_fk": {
+          "name": "series_created_by_user_id_fk",
+          "tableFrom": "series",
+          "tableTo": "user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -406,30 +469,6 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "text": {
-      "name": "text",
-      "columns": {
-        "item_id": {
-          "name": "item_id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "item_text": {
-          "name": "item_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -515,7 +554,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.295Z\"'"
+          "default": "'\"2025-04-08T09:31:06.795Z\"'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -523,7 +562,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.295Z\"'"
+          "default": "'\"2025-04-08T09:31:06.795Z\"'"
         }
       },
       "indexes": {
@@ -550,18 +589,18 @@
     "video": {
       "name": "video",
       "columns": {
-        "item_id": {
-          "name": "item_id",
-          "type": "integer",
+        "id": {
+          "name": "id",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
-        "file_url": {
-          "name": "file_url",
-          "type": "text",
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "width": {
@@ -580,7 +619,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "video_item_id_item_id_fk": {
+          "name": "video_item_id_item_id_fk",
+          "tableFrom": "video",
+          "tableTo": "item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -615,7 +668,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.296Z\"'"
+          "default": "'\"2025-04-08T09:31:06.796Z\"'"
         }
       },
       "indexes": {},
@@ -684,7 +737,7 @@
         },
         "author_id": {
           "name": "author_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -710,7 +763,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.295Z\"'"
+          "default": "'\"2025-04-08T09:31:06.795Z\"'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -718,7 +771,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T07:50:54.295Z\"'"
+          "default": "'\"2025-04-08T09:31:06.795Z\"'"
         }
       },
       "indexes": {},

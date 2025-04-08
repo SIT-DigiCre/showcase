@@ -11,7 +11,7 @@ export const userTable = sqliteTable("user", {
   id: text().primaryKey(),
   slug: text().unique(),
   email: text().notNull().unique(),
-  emailVerified: integer("email_verified", { mode: "timestamp" }),
+  emailVerified: integer("email_verified", { mode: "timestamp_ms" }),
   name: text().notNull(),
   image: text(),
   cover: text(),
@@ -20,10 +20,10 @@ export const userTable = sqliteTable("user", {
     .notNull()
     .default("user"),
   isVerified: integer("is_verified", { mode: "boolean" }).default(false),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date())
     .$onUpdate(() => new Date()),
@@ -72,10 +72,10 @@ export const workTable = sqliteTable("work", {
     .references(() => userTable.id),
   period: text(),
   isVisible: integer("is_visible", { mode: "boolean" }).default(false),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date())
     .$onUpdate(() => new Date()),
@@ -87,60 +87,58 @@ export const itemTable = sqliteTable("item", {
     .notNull()
     .references(() => workTable.id),
   name: text().notNull(),
+  fileUrl: text("file_url").notNull(),
   type: text({
-    enum: ["text", "image", "audio", "video", "document"],
+    enum: ["image", "audio", "video", "asset"],
   }).notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date())
     .$onUpdate(() => new Date()),
 });
 
 export const videoTable = sqliteTable("video", {
-  itemId: integer("item_id").primaryKey(),
-  fileUrl: text("file_url").notNull(),
+  id: text().primaryKey(),
+  itemId: integer("item_id").references(() => itemTable.id),
   width: integer(),
   height: integer(),
 });
 
 export const audioTable = sqliteTable("audio", {
-  itemId: integer("item_id").primaryKey(),
-  fileUrl: text("file_url").notNull(),
+  id: text().primaryKey(),
+  itemId: integer("item_id").references(() => itemTable.id),
   duration: integer(),
 });
 
-export const documentTable = sqliteTable("document", {
-  itemId: integer("item_id").primaryKey(),
-  fileUrl: text("file_url").notNull(),
+export const assetTable = sqliteTable("asset", {
+  id: text().primaryKey(),
+  itemId: integer("item_id").references(() => itemTable.id),
   format: text(),
   previewUrl: text("preview_url"),
 });
 
 export const imageTable = sqliteTable("image", {
-  itemId: integer("item_id").primaryKey(),
-  fileUrl: text("file_url").notNull(),
+  id: text().primaryKey(),
+  itemId: integer("item_id").references(() => itemTable.id),
   width: integer(),
   height: integer(),
   altText: text("alt_text"),
-});
-
-export const textTable = sqliteTable("text", {
-  itemId: integer("item_id").primaryKey(),
-  itemText: text("item_text").notNull(),
 });
 
 export const seriesTable = sqliteTable("series", {
   id: integer().primaryKey({ autoIncrement: true }),
   name: text().notNull().unique(),
   description: text(),
-  createdBy: integer("created_by").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => userTable.id),
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date())
     .$onUpdate(() => new Date()),
@@ -154,7 +152,7 @@ export const workSeriesTable = sqliteTable("work_series", {
   seriesId: integer("series_id")
     .notNull()
     .references(() => seriesTable.id),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
     .default(new Date()),
 });

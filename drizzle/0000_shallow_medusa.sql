@@ -15,34 +15,38 @@ CREATE TABLE `account` (
 );
 --> statement-breakpoint
 CREATE INDEX `user_id` ON `account` (`user_id`);--> statement-breakpoint
-CREATE TABLE `audio` (
-	`item_id` integer PRIMARY KEY NOT NULL,
-	`file_url` text NOT NULL,
-	`duration` integer
+CREATE TABLE `asset` (
+	`id` text PRIMARY KEY NOT NULL,
+	`item_id` integer,
+	`format` text,
+	`preview_url` text,
+	FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE TABLE `document` (
-	`item_id` integer PRIMARY KEY NOT NULL,
-	`file_url` text NOT NULL,
-	`format` text,
-	`preview_url` text
+CREATE TABLE `audio` (
+	`id` text PRIMARY KEY NOT NULL,
+	`item_id` integer,
+	`duration` integer,
+	FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `image` (
-	`item_id` integer PRIMARY KEY NOT NULL,
-	`file_url` text NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
+	`item_id` integer,
 	`width` integer,
 	`height` integer,
-	`alt_text` text
+	`alt_text` text,
+	FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `item` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`work_id` integer NOT NULL,
 	`name` text NOT NULL,
+	`file_url` text NOT NULL,
 	`type` text NOT NULL,
-	`created_at` integer DEFAULT '"2025-04-08T07:50:54.296Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T07:50:54.296Z"' NOT NULL,
+	`created_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
 	FOREIGN KEY (`work_id`) REFERENCES `work`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -50,9 +54,10 @@ CREATE TABLE `series` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`description` text,
-	`created_by` integer NOT NULL,
-	`created_at` integer DEFAULT '"2025-04-08T07:50:54.296Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T07:50:54.296Z"' NOT NULL
+	`created_by` text NOT NULL,
+	`created_at` integer DEFAULT '"2025-04-08T09:31:06.796Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.796Z"' NOT NULL,
+	FOREIGN KEY (`created_by`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `series_name_unique` ON `series` (`name`);--> statement-breakpoint
@@ -61,11 +66,6 @@ CREATE TABLE `session` (
 	`user_id` text NOT NULL,
 	`expires` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
-);
---> statement-breakpoint
-CREATE TABLE `text` (
-	`item_id` integer PRIMARY KEY NOT NULL,
-	`item_text` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
@@ -79,24 +79,25 @@ CREATE TABLE `user` (
 	`bio` text,
 	`role` text DEFAULT 'user' NOT NULL,
 	`is_verified` integer DEFAULT false,
-	`created_at` integer DEFAULT '"2025-04-08T07:50:54.295Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T07:50:54.295Z"' NOT NULL
+	`created_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `user_slug_unique` ON `user` (`slug`);--> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint
 CREATE TABLE `video` (
-	`item_id` integer PRIMARY KEY NOT NULL,
-	`file_url` text NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
+	`item_id` integer,
 	`width` integer,
-	`height` integer
+	`height` integer,
+	FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `work_series` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`work_id` integer NOT NULL,
 	`series_id` integer NOT NULL,
-	`created_at` integer DEFAULT '"2025-04-08T07:50:54.296Z"' NOT NULL,
+	`created_at` integer DEFAULT '"2025-04-08T09:31:06.796Z"' NOT NULL,
 	FOREIGN KEY (`work_id`) REFERENCES `work`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`series_id`) REFERENCES `series`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -106,10 +107,10 @@ CREATE TABLE `work` (
 	`title` text NOT NULL,
 	`description` text,
 	`content` text,
-	`author_id` integer NOT NULL,
+	`author_id` text NOT NULL,
 	`period` text,
 	`is_visible` integer DEFAULT false,
-	`created_at` integer DEFAULT '"2025-04-08T07:50:54.295Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T07:50:54.295Z"' NOT NULL,
+	`created_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
 	FOREIGN KEY (`author_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );

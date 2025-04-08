@@ -30,5 +30,5 @@ export async function postAction(_prevState: unknown, formData: FormData) {
     throw new Error("Failed to create work");
   }
 
-  redirect(`/${session.user.id}/${result.id}`);
+  redirect(`/${session.user.slug}/${result.id}`);
 }
