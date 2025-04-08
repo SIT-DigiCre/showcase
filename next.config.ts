@@ -7,6 +7,19 @@ const nextConfig: NextConfig = {
       {
         hostname: "pbs.twimg.com",
       },
+      { hostname: "lh3.googleusercontent.com" },
+      {
+        hostname: "images.unsplash.com",
+      },
+      {
+        hostname: "cdn.discordapp.com",
+      },
+      {
+        hostname: "s3.wasabisys.com",
+      },
+      {
+        hostname: "*.wasabisys.com",
+      },
     ],
   },
 };

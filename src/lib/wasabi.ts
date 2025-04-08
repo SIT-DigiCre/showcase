@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { nanoid } from "nanoid";
 
 const s3Client = new S3Client({
   region: env.WASABI_REGION,
@@ -11,15 +12,21 @@ const s3Client = new S3Client({
 });
 
 export async function uploadFile(
-  key: string,
-  file: Buffer,
-  contentType: string
+  file: File,
+  options: {
+    prefix: string;
+  }
 ) {
+  const key = `${options.prefix}/${nanoid()}`;
+  const fileBuffer = await file.arrayBuffer();
+  const uint8FileData = new Uint8Array(fileBuffer);
   const command = new PutObjectCommand({
     Bucket: env.WASABI_BUCKET_NAME,
     Key: key,
-    Body: file,
-    ContentType: contentType,
+    Body: uint8FileData,
+    ContentType: file.type,
+    ACL: "public-read",
   });
-  return s3Client.send(command);
+  await s3Client.send(command);
+  return `https://${env.WASABI_BUCKET_NAME}.s3.wasabisys.com//${key}`;
 }

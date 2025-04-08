@@ -6,8 +6,9 @@ import { schema } from "./schema";
 import { auth } from "@/auth";
 import db from "@/db";
 import { workTable } from "@/db/schema";
+import { uploadFile } from "@/lib/wasabi";
 
-export async function postAction(_prevState: unknown, formData: FormData) {
+export async function postAction(formData: FormData) {
   const session = await auth();
 
   if (!session || !session.user) {
@@ -18,7 +19,7 @@ export async function postAction(_prevState: unknown, formData: FormData) {
   });
 
   if (submission.status !== "success") {
-    return submission.reply();
+    throw new Error("Validation failed");
   }
 
   const [result] = await db
@@ -31,4 +32,20 @@ export async function postAction(_prevState: unknown, formData: FormData) {
   }
 
   redirect(`/${session.user.slug}/${result.id}`);
+}
+
+export async function uploadFileAction(file: File) {
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return redirect("/login");
+  }
+
+  const url = await uploadFile(file, { prefix: "items" });
+
+  if (!url) {
+    throw new Error("Failed to upload file");
+  }
+
+  return url;
 }
