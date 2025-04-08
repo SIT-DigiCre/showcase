@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   sqliteTable,
   text,
@@ -28,6 +29,11 @@ export const userTable = sqliteTable("user", {
     .default(new Date())
     .$onUpdate(() => new Date()),
 });
+
+export const userRelations = relations(userTable, ({ many }) => ({
+  works: many(workTable),
+  series: many(seriesTable),
+}));
 
 export type UserSchema = typeof userTable.$inferSelect;
 
@@ -81,6 +87,14 @@ export const workTable = sqliteTable("work", {
     .$onUpdate(() => new Date()),
 });
 
+export const workRelations = relations(workTable, ({ one, many }) => ({
+  user: one(userTable, {
+    fields: [workTable.authorId],
+    references: [userTable.id],
+  }),
+  items: many(itemTable),
+}));
+
 export const itemTable = sqliteTable("item", {
   id: integer().primaryKey({ autoIncrement: true }),
   workId: integer("work_id")
@@ -99,6 +113,13 @@ export const itemTable = sqliteTable("item", {
     .default(new Date())
     .$onUpdate(() => new Date()),
 });
+
+export const itemRelations = relations(itemTable, ({ one }) => ({
+  work: one(workTable, {
+    fields: [itemTable.workId],
+    references: [workTable.id],
+  }),
+}));
 
 export const videoTable = sqliteTable("video", {
   id: text().primaryKey(),
@@ -143,6 +164,14 @@ export const seriesTable = sqliteTable("series", {
     .default(new Date())
     .$onUpdate(() => new Date()),
 });
+
+export const seriesRelations = relations(seriesTable, ({ one, many }) => ({
+  user: one(userTable, {
+    fields: [seriesTable.createdBy],
+    references: [userTable.id],
+  }),
+  works: many(workSeriesTable),
+}));
 
 export const workSeriesTable = sqliteTable("work_series", {
   id: integer().primaryKey({ autoIncrement: true }),

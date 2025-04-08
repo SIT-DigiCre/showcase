@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import H1 from "@/components/common/H1";
 import UserHeader from "@/components/common/user-header";
 import db from "@/db";
-import { workTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
 
@@ -17,10 +16,12 @@ export default async function MePage() {
     );
   }
 
-  const works = await db
-    .select()
-    .from(workTable)
-    .where(eq(workTable.authorId, session.user.id));
+  const works = await db.query.workTable.findMany({
+    where: (work) => eq(work.authorId, session.user.id),
+    with: {
+      items: true,
+    },
+  });
 
   return (
     <div>
@@ -30,18 +31,26 @@ export default async function MePage() {
         {works.length === 0 ? (
           <p>No works found</p>
         ) : (
-          <ul>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,400px))] gap-4 justify-center">
             {works.map((work) => (
-              <li key={work.id}>
-                <Link
-                  href={`/${session.user.slug}/${work.id}`}
-                  className="text-blue-500"
-                >
+              <Link
+                key={work.id}
+                href={`/${session.user.slug}/${work.id}`}
+                className="block w-full"
+              >
+                {work.items.length > 0 && (
+                  <img
+                    src={work.items[0].fileUrl}
+                    alt="Image"
+                    className="w-full object-cover aspect-square"
+                  />
+                )}
+                <div className="text-2xl font-bold text-center">
                   {work.title}
-                </Link>
-              </li>
+                </div>
+              </Link>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
