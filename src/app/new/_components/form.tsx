@@ -39,13 +39,14 @@ export function PostForm() {
           {...getInputProps(fields.description, { type: "text" })}
           isRequired={fields.description.required}
           label="説明文"
+          placeholder="短い説明文を入力してください"
           errorMessage={fields.description.errors?.join(", ")}
         />
         <Textarea
           {...getInputProps(fields.content, { type: "text" })}
           isRequired={fields.content.required}
           label="コンテンツ"
-          placeholder="コンテンツを入力してください"
+          placeholder="長い説明文を入力してください"
           errorMessage={fields.content.errors?.join(", ")}
         />
         <Checkbox
@@ -56,7 +57,10 @@ export function PostForm() {
         />
         <ul className="flex justify-start">
           {items.map((item, index) => (
-            <li key={item.key} className="flex flex-col gap-2">
+            <li
+              key={item.key}
+              className="flex flex-row justify-between gap-2 w-full items-center"
+            >
               <input
                 {...getInputProps(item, { type: "file" })}
                 key={item.key}
@@ -85,7 +89,9 @@ export function PostForm() {
           追加する
         </Button>
       </div>
-      <Button type="submit">投稿する</Button>
+      <Button type="submit" className="mt-8">
+        投稿する
+      </Button>
     </Form>
   );
 }

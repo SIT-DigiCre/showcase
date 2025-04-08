@@ -2,8 +2,8 @@ import { PostForm } from "./_components/form";
 
 export default async function NewPage() {
   return (
-    <div className="my-10">
-      <h1 className="text-4xl font-bold">New work</h1>
+    <div>
+      <h1 className="text-4xl font-bold my-4">New work</h1>
       <PostForm />
     </div>
   );
