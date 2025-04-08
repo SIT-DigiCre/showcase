@@ -24,11 +24,13 @@ import {
   IconToolbox,
 } from "justd-icons";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export default function AppSidebar(
   props: React.ComponentProps<typeof Sidebar>
 ) {
+  const pathname = usePathname();
   const { state } = useSidebar();
   const { data } = useSession();
 
@@ -45,15 +47,23 @@ export default function AppSidebar(
       </SidebarHeader>
       <SidebarContent>
         <SidebarSection title="Menu">
-          <SidebarItem tooltip="Timeline" isCurrent href="/">
+          <SidebarItem tooltip="Timeline" isCurrent={pathname === "/"} href="/">
             <IconDashboard />
             <SidebarLabel>Timeline</SidebarLabel>
           </SidebarItem>
-          <SidebarItem tooltip="Search" href="/search">
+          <SidebarItem
+            tooltip="Search"
+            isCurrent={pathname.startsWith("/search")}
+            href="/search"
+          >
             <IconSearch />
             <SidebarLabel>Search</SidebarLabel>
           </SidebarItem>
-          <SidebarItem tooltip="Me" href="/me">
+          <SidebarItem
+            tooltip="Me"
+            isCurrent={pathname.startsWith("/me")}
+            href="/me"
+          >
             <IconPerson />
             <SidebarLabel>Me</SidebarLabel>
           </SidebarItem>
@@ -91,11 +101,11 @@ export default function AppSidebar(
                 </Menu.Header>
               </Menu.Section>
 
-              <Menu.Item href="/">
+              <Menu.Item href="/me">
                 <IconDashboard />
-                Dashboard
+                My Page
               </Menu.Item>
-              <Menu.Item href="/">
+              <Menu.Item href="/settings">
                 <IconSettings />
                 Settings
               </Menu.Item>

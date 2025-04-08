@@ -1,12 +1,12 @@
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 
 interface AvatarProps {
-  src?: string | null
-  initials?: string
-  alt?: string
-  className?: string
-  shape?: "square" | "circle"
-  size?: "extra-small" | "small" | "medium" | "large" | "extra-large"
+  src?: string | null;
+  initials?: string;
+  alt?: string;
+  className?: string;
+  shape?: "square" | "circle";
+  size?: "extra-small" | "small" | "medium" | "large" | "extra-large";
 }
 
 const Avatar = ({
@@ -28,10 +28,11 @@ const Avatar = ({
         size === "small" && "size-6 *:size-6",
         size === "medium" && "size-8 *:size-8",
         size === "large" && "size-10 *:size-10",
-        size === "extra-large" && "size-12 *:size-12",
-        shape === "square" && "rounded-(--avatar-radius) *:rounded-(--avatar-radius)",
+        size === "extra-large" && "size-20 *:size-20",
+        shape === "square" &&
+          "rounded-(--avatar-radius) *:rounded-(--avatar-radius)",
         shape === "circle" && "rounded-full *:rounded-full",
-        className,
+        className
       )}
     >
       {initials && (
@@ -55,8 +56,8 @@ const Avatar = ({
       )}
       {src && <img className="size-full" src={src} alt={alt} />}
     </span>
-  )
-}
+  );
+};
 
-export type { AvatarProps }
-export { Avatar }
+export type { AvatarProps };
+export { Avatar };
