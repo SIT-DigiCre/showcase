@@ -105,8 +105,10 @@ export default function AppSidebar(
             >
               <Menu.Section>
                 <Menu.Header separator>
-                  <span className="block">Kurt Cobain</span>
-                  <span className="font-normal text-muted-fg">@cobain</span>
+                  <span className="block">{data.user.name}</span>
+                  <span className="font-normal text-muted-fg">
+                    @{data.user.slug}
+                  </span>
                 </Menu.Header>
               </Menu.Section>
 

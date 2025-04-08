@@ -67,7 +67,7 @@ export const workTable = sqliteTable("work", {
   title: text().notNull(),
   description: text(),
   content: text(),
-  authorId: integer("author_id")
+  authorId: text("author_id")
     .notNull()
     .references(() => userTable.id),
   period: text(),
