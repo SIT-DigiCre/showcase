@@ -40,7 +40,7 @@ export default async function UserPage({
               {work.items.length > 0 && (
                 <img
                   src={work.items[0].fileUrl}
-                  alt="Image"
+                  alt={work.items[0].name}
                   className="w-full object-cover aspect-square"
                 />
               )}

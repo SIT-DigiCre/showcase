@@ -1,4 +1,4 @@
-import { UserSchema } from "./db/schema";
+import type { UserSchema } from "./db/schema";
 
 export type ExtendedUser = UserSchema;
 

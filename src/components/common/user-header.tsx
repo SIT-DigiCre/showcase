@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Avatar } from "../ui/avatar";
-import { UserSchema } from "@/db/schema";
+import type { UserSchema } from "@/db/schema";
 
 type UserHeaderProps = {
   user: UserSchema;

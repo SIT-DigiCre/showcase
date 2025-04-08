@@ -39,6 +39,7 @@ export default async function WorkPage({
           <div key={item.id}>
             {item.type === "image" && (
               <img
+                alt={item.name}
                 src={item.fileUrl}
                 className="rounded-lg max-w-full max-h-full"
               />
