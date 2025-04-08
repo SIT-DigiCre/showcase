@@ -1,19 +1,65 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable,
+  text,
+  integer,
+  primaryKey,
+  index,
+} from "drizzle-orm/sqlite-core";
+import type { AdapterAccountType } from "next-auth/adapters";
 
 export const userTable = sqliteTable("user", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  slug: text().notNull().unique(),
+  id: text().primaryKey(),
+  slug: text().unique(),
   email: text().notNull().unique(),
+  emailVerified: integer("email_verified", { mode: "timestamp" }),
   name: text().notNull(),
-  icon_url: text(),
-  cover_url: text(),
+  image: text(),
+  cover: text(),
   bio: text(),
   role: text({ enum: ["admin", "user"] })
     .notNull()
     .default("user"),
-  is_verified: integer({ mode: "boolean" }).default(false),
-  created_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
-  updated_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
+  isVerified: integer("is_verified", { mode: "boolean" }).default(false),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date())
+    .$onUpdate(() => new Date()),
+});
+
+export type UserSchema = typeof userTable.$inferSelect;
+
+export const accountTable = sqliteTable(
+  "account",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    type: text("type").$type<AdapterAccountType>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => [
+    primaryKey({ columns: [account.provider, account.providerAccountId] }),
+    index("user_id").on(account.userId),
+  ]
+);
+
+export const sessionTable = sqliteTable("session", {
+  sessionToken: text("session_token").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id, { onDelete: "cascade" }),
+  expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
 });
 
 export const workTable = sqliteTable("work", {
@@ -21,77 +67,94 @@ export const workTable = sqliteTable("work", {
   title: text().notNull(),
   description: text(),
   content: text(),
-  author_id: integer()
+  authorId: integer("author_id")
     .notNull()
     .references(() => userTable.id),
   period: text(),
-  is_visible: integer({ mode: "boolean" }).default(false),
-  created_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
-  updated_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
+  isVisible: integer("is_visible", { mode: "boolean" }).default(false),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date())
+    .$onUpdate(() => new Date()),
 });
 
 export const itemTable = sqliteTable("item", {
   id: integer().primaryKey({ autoIncrement: true }),
-  work_id: integer()
+  workId: integer("work_id")
     .notNull()
     .references(() => workTable.id),
   name: text().notNull(),
   type: text({
     enum: ["text", "image", "audio", "video", "document"],
   }).notNull(),
-  created_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
-  updated_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date())
+    .$onUpdate(() => new Date()),
 });
 
 export const videoTable = sqliteTable("video", {
-  item_id: integer().primaryKey(),
-  file_url: text().notNull(),
+  itemId: integer("item_id").primaryKey(),
+  fileUrl: text("file_url").notNull(),
   width: integer(),
   height: integer(),
 });
 
 export const audioTable = sqliteTable("audio", {
-  item_id: integer().primaryKey(),
-  file_url: text().notNull(),
+  itemId: integer("item_id").primaryKey(),
+  fileUrl: text("file_url").notNull(),
   duration: integer(),
 });
 
 export const documentTable = sqliteTable("document", {
-  item_id: integer().primaryKey(),
-  file_url: text().notNull(),
+  itemId: integer("item_id").primaryKey(),
+  fileUrl: text("file_url").notNull(),
   format: text(),
-  preview_url: text(),
+  previewUrl: text("preview_url"),
 });
 
 export const imageTable = sqliteTable("image", {
-  item_id: integer().primaryKey(),
-  file_url: text().notNull(),
+  itemId: integer("item_id").primaryKey(),
+  fileUrl: text("file_url").notNull(),
   width: integer(),
   height: integer(),
-  alt_text: text(),
+  altText: text("alt_text"),
 });
 
 export const textTable = sqliteTable("text", {
-  item_id: integer().primaryKey(),
-  item_text: text().notNull(),
+  itemId: integer("item_id").primaryKey(),
+  itemText: text("item_text").notNull(),
 });
 
 export const seriesTable = sqliteTable("series", {
   id: integer().primaryKey({ autoIncrement: true }),
   name: text().notNull().unique(),
   description: text(),
-  created_by: integer().notNull(),
-  created_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
-  updated_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
+  createdBy: integer("created_by").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date())
+    .$onUpdate(() => new Date()),
 });
 
 export const workSeriesTable = sqliteTable("work_series", {
   id: integer().primaryKey({ autoIncrement: true }),
-  work_id: integer()
+  workId: integer("work_id")
     .notNull()
     .references(() => workTable.id),
-  series_id: integer()
+  seriesId: integer("series_id")
     .notNull()
     .references(() => seriesTable.id),
-  created_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
 });
