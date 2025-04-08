@@ -4,7 +4,7 @@ export default async function Home() {
   return (
     <>
       <H1>Timeline</H1>
-      <p>ここに作品のリストを表示します。</p>
+      <div className="text-center my-10">Under implementation...</div>
     </>
   );
 }
