@@ -8,14 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { getInputProps, useForm } from "@conform-to/react";
 import { getValibotConstraint, parseWithValibot } from "conform-to-valibot";
 import { schema } from "./schema";
-import { postAction, uploadFileAction } from "./action";
-import { useTransition } from "react";
-import { DropArea } from "./drop-area";
-
-import Image from "next/image";
+import { postAction } from "./action";
 
 export function PostForm() {
-  const [isPending, startTransition] = useTransition();
   const [form, fields] = useForm({
     constraint: getValibotConstraint(schema),
     defaultValue: {
@@ -23,13 +18,13 @@ export function PostForm() {
       description: "",
       content: "",
       isVisible: false,
-      blocks: [],
+      items: [],
     },
     onValidate({ formData }) {
       return parseWithValibot(formData, { schema });
     },
   });
-  const items = fields.blocks.getFieldList();
+  const items = fields.items.getFieldList();
 
   return (
     <Form id={form.id} onSubmit={form.onSubmit} action={postAction}>
@@ -44,14 +39,12 @@ export function PostForm() {
           {...getInputProps(fields.description, { type: "text" })}
           isRequired={fields.description.required}
           label="説明文"
-          className="resize-none"
           errorMessage={fields.description.errors?.join(", ")}
         />
         <Textarea
           {...getInputProps(fields.content, { type: "text" })}
           isRequired={fields.content.required}
           label="コンテンツ"
-          className="resize-none"
           placeholder="コンテンツを入力してください"
           errorMessage={fields.content.errors?.join(", ")}
         />
@@ -61,50 +54,38 @@ export function PostForm() {
           name={fields.isVisible.name}
           label="公開する"
         />
-        <div className="flex justify-start">
-          {items.map((item) => (
-            <div key={item.value?.fileUrl} className="flex flex-col gap-2">
-              {item.value?.type === "image" && item.value.fileUrl && (
-                <Image
-                  src={item.value.fileUrl}
-                  width={100}
-                  height={100}
-                  alt=""
-                  className="aspect-square size-full object-contain"
-                />
-              )}
-              <TextField
-                {...getInputProps(item, { type: "text" })}
-                isRequired={item.required}
-                label="ファイル名"
-                errorMessage={item.errors?.join(", ")}
+        <ul className="flex justify-start">
+          {items.map((item, index) => (
+            <li key={item.key} className="flex flex-col gap-2">
+              <input
+                {...getInputProps(item, { type: "file" })}
+                key={item.key}
               />
-            </div>
+              <Button
+                onPress={() => {
+                  form.remove({
+                    name: fields.items.name,
+                    index,
+                  });
+                }}
+                intent="danger"
+              >
+                削除
+              </Button>
+            </li>
           ))}
-          <DropArea
-            isPending={isPending}
-            onDrop={(files) => {
-              startTransition(async () => {
-                await Promise.all(
-                  files.map(async (file) => {
-                    const result = await uploadFileAction(file);
-                    form.insert({
-                      name: fields.blocks.name,
-                      defaultValue: {
-                        fileUrl: result,
-                        type: file.type.startsWith("image/")
-                          ? "image"
-                          : "asset",
-                      },
-                    });
-                  })
-                );
-              });
-            }}
-          />
-        </div>
-        <Button type="submit">投稿する</Button>
+        </ul>
+        <Button
+          onPress={() => {
+            form.insert({
+              name: fields.items.name,
+            });
+          }}
+        >
+          追加する
+        </Button>
       </div>
+      <Button type="submit">投稿する</Button>
     </Form>
   );
 }

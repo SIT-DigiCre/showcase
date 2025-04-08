@@ -17,7 +17,7 @@ export default async function WorkPage({
   }
 
   return (
-    <div className="text-center my-10">
+    <div className="my-10">
       <h1 className="text-4xl font-bold">{work.title}</h1>
       <p className="text-gray-500">{work.description}</p>
       <div className="mt-4">

@@ -28,5 +28,5 @@ export async function uploadFile(
     ACL: "public-read",
   });
   await s3Client.send(command);
-  return `https://${env.WASABI_BUCKET_NAME}.s3.wasabisys.com//${key}`;
+  return `https://${env.WASABI_BUCKET_NAME}.s3.wasabisys.com/${key}`;
 }
