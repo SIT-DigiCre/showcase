@@ -24,6 +24,7 @@ export const workTable = sqliteTable("work", {
   author_id: integer()
     .notNull()
     .references(() => userTable.id),
+  period: text(),
   is_visible: integer({ mode: "boolean" }).default(false),
   created_at: integer({ mode: "timestamp" }).notNull().default(new Date()),
   updated_at: integer({ mode: "timestamp" }).notNull().default(new Date()),

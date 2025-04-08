@@ -6,6 +6,7 @@ export default async function SearchPage() {
     <>
       <H1>Search</H1>
       <SearchField aria-label="Search" placeholder="Search" />
+      <div className="text-center my-10">Under implementation...</div>
     </>
   );
 }

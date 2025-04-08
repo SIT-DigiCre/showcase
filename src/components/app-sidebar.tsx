@@ -19,6 +19,7 @@ import {
   IconDashboard,
   IconLogout,
   IconPerson,
+  IconPlus,
   IconSearch,
   IconSettings,
   IconToolbox,
@@ -66,6 +67,14 @@ export default function AppSidebar(
           >
             <IconPerson />
             <SidebarLabel>Me</SidebarLabel>
+          </SidebarItem>
+          <SidebarItem
+            tooltip="new"
+            isCurrent={pathname.startsWith("/new")}
+            href="/new"
+          >
+            <IconPlus />
+            <SidebarLabel>New</SidebarLabel>
           </SidebarItem>
         </SidebarSection>
       </SidebarContent>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
 interface AvatarProps {
@@ -54,7 +55,7 @@ const Avatar = ({
           </text>
         </svg>
       )}
-      {src && <img className="size-full" src={src} alt={alt} />}
+      {src && <Image className="size-full" src={src} alt={alt} />}
     </span>
   );
 };
