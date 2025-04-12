@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   sqliteTable,
   text,
@@ -23,11 +23,12 @@ export const userTable = sqliteTable("user", {
   isVerified: integer("is_verified", { mode: "boolean" }).default(false),
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date())
-    .$onUpdate(() => new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 });
 
 export const userRelations = relations(userTable, ({ many }) => ({
@@ -80,11 +81,12 @@ export const workTable = sqliteTable("work", {
   isVisible: integer("is_visible", { mode: "boolean" }).default(false),
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date())
-    .$onUpdate(() => new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 });
 
 export const workRelations = relations(workTable, ({ one, many }) => ({
@@ -107,11 +109,12 @@ export const itemTable = sqliteTable("item", {
   }).notNull(),
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date())
-    .$onUpdate(() => new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 });
 
 export const itemRelations = relations(itemTable, ({ one }) => ({
@@ -158,11 +161,12 @@ export const seriesTable = sqliteTable("series", {
     .references(() => userTable.id),
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date())
-    .$onUpdate(() => new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 });
 
 export const seriesRelations = relations(seriesTable, ({ one, many }) => ({
@@ -183,5 +187,6 @@ export const workSeriesTable = sqliteTable("work_series", {
     .references(() => seriesTable.id),
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date()),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 });

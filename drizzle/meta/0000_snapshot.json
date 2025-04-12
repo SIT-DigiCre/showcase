@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "875941e2-78db-4539-86a3-204a01e3fb3f",
+  "id": "091ff1fc-f77d-4961-954c-41d8857aed85",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -321,7 +321,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.795Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         },
         "updated_at": {
           "name": "updated_at",
@@ -329,7 +329,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.795Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {},
@@ -389,7 +389,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.796Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         },
         "updated_at": {
           "name": "updated_at",
@@ -397,7 +397,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.796Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {
@@ -554,7 +554,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.795Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         },
         "updated_at": {
           "name": "updated_at",
@@ -562,7 +562,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.795Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {
@@ -668,7 +668,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.796Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {},
@@ -763,7 +763,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.795Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         },
         "updated_at": {
           "name": "updated_at",
@@ -771,7 +771,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2025-04-08T09:31:06.795Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {},

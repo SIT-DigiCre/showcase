@@ -45,8 +45,8 @@ CREATE TABLE `item` (
 	`name` text NOT NULL,
 	`file_url` text NOT NULL,
 	`type` text NOT NULL,
-	`created_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
+	`created_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+	`updated_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
 	FOREIGN KEY (`work_id`) REFERENCES `work`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -55,8 +55,8 @@ CREATE TABLE `series` (
 	`name` text NOT NULL,
 	`description` text,
 	`created_by` text NOT NULL,
-	`created_at` integer DEFAULT '"2025-04-08T09:31:06.796Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.796Z"' NOT NULL,
+	`created_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+	`updated_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
 	FOREIGN KEY (`created_by`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -79,8 +79,8 @@ CREATE TABLE `user` (
 	`bio` text,
 	`role` text DEFAULT 'user' NOT NULL,
 	`is_verified` integer DEFAULT false,
-	`created_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL
+	`created_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+	`updated_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `user_slug_unique` ON `user` (`slug`);--> statement-breakpoint
@@ -97,7 +97,7 @@ CREATE TABLE `work_series` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`work_id` integer NOT NULL,
 	`series_id` integer NOT NULL,
-	`created_at` integer DEFAULT '"2025-04-08T09:31:06.796Z"' NOT NULL,
+	`created_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
 	FOREIGN KEY (`work_id`) REFERENCES `work`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`series_id`) REFERENCES `series`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -110,7 +110,7 @@ CREATE TABLE `work` (
 	`author_id` text NOT NULL,
 	`period` text,
 	`is_visible` integer DEFAULT false,
-	`created_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2025-04-08T09:31:06.795Z"' NOT NULL,
+	`created_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+	`updated_at` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
 	FOREIGN KEY (`author_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
