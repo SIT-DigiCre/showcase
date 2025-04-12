@@ -60,22 +60,26 @@ export default function AppSidebar(
             <IconSearch />
             <SidebarLabel>Search</SidebarLabel>
           </SidebarItem>
-          <SidebarItem
-            tooltip="Me"
-            isCurrent={pathname.startsWith("/me")}
-            href="/me"
-          >
-            <IconPerson />
-            <SidebarLabel>Me</SidebarLabel>
-          </SidebarItem>
-          <SidebarItem
-            tooltip="new"
-            isCurrent={pathname.startsWith("/new")}
-            href="/new"
-          >
-            <IconPlus />
-            <SidebarLabel>New</SidebarLabel>
-          </SidebarItem>
+          {data?.user && (
+            <>
+              <SidebarItem
+                tooltip="Me"
+                isCurrent={pathname.startsWith(`/${data.user.slug}`)}
+                href={`/${data.user.slug}`}
+              >
+                <IconPerson />
+                <SidebarLabel>Me</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem
+                tooltip="New"
+                isCurrent={pathname.startsWith("/new")}
+                href="/new"
+              >
+                <IconPlus />
+                <SidebarLabel>New</SidebarLabel>
+              </SidebarItem>
+            </>
+          )}
         </SidebarSection>
       </SidebarContent>
 
