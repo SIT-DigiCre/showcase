@@ -190,3 +190,14 @@ export const workSeriesTable = sqliteTable("work_series", {
     .default(sql`(CURRENT_TIMESTAMP)`)
     .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 });
+
+export const workSeriesRelations = relations(workSeriesTable, ({ one }) => ({
+  series: one(seriesTable, {
+    fields: [workSeriesTable.seriesId],
+    references: [seriesTable.id],
+  }),
+  work: one(workTable, {
+    fields: [workSeriesTable.workId],
+    references: [workTable.id],
+  }),
+}));

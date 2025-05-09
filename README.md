@@ -1,4 +1,4 @@
-Showcase はデジクリ用の作品投稿プラットフォームです。
+Showcase は芝浦工業大学のデジタル創作サークル「デジクリ」のための作品投稿プラットフォームです。
 
 # 技術構成
 
@@ -9,3 +9,29 @@ Showcase はデジクリ用の作品投稿プラットフォームです。
 - Tailwind CSS, justd
 - Conform
 - Valibot
+
+# 環境構築
+
+## 依存関係のインストール
+
+```bash
+bun install
+```
+
+## 開発サーバーの起動
+
+```bash
+bun run dev
+```
+
+## データベースのプレビュー
+
+```bash
+bunx drizzle-kit studio
+```
+
+## データベースのマイグレーション
+
+```bash
+bunx drizzle-kit migrate
+```
